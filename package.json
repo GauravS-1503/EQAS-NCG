@@ -1,0 +1,31 @@
+{
+  "name": "eqas-ncg",
+  "version": "1.0.0",
+  "description": "This is a cleaned, deploy-ready version of your site for GitHub Pages.",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GauravS-1503/EQAS-NCG.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GauravS-1503/EQAS-NCG/issues"
+  },
+  "homepage": "https://github.com/GauravS-1503/EQAS-NCG#readme",
+  "dependencies": {
+    "compression": "^1.8.1",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
