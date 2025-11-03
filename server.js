@@ -4,6 +4,8 @@ import { fileURLToPath } from "url";
 import compression from "compression";
 import helmet from "helmet";
 import morgan from "morgan";
+import fs from "fs/promises";
+import bodyParser from "body-parser";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,6 +17,33 @@ const PORT = process.env.PORT || 3000;
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(compression());
 app.use(morgan("dev"));
+app.use(bodyParser.json());
+
+// API route for registration
+app.post("/api/register", async (req, res) => {
+  try {
+    const newRegistration = req.body;
+    const data = await fs.readFile("registrations.json", "utf-8");
+    const registrations = JSON.parse(data);
+    registrations.push(newRegistration);
+    await fs.writeFile("registrations.json", JSON.stringify(registrations, null, 2));
+    res.status(200).send("Registration successful");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+});
+
+app.get("/api/registrations", async (req, res) => {
+  try {
+    const data = await fs.readFile("registrations.json", "utf-8");
+    const registrations = JSON.parse(data);
+    res.json(registrations);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+});
 
 // Serve static assets
 app.use(express.static(__dirname, { extensions: ["html"] }));

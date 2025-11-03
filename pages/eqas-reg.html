@@ -478,15 +478,11 @@
       }
 
       try {
-        // TODO: replace with your real API call
-        // await fetch('/api/register', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(payload),
-        // });
-
-        // Demo delay only
-        await new Promise((r) => setTimeout(r, 500));
+        await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
 
         // Step 2: success prompt
         alert('Thank you for your registration. Details will be shared with you shortly.');
