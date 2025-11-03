@@ -266,7 +266,7 @@
             <div class="container">
                 <h1>About us</h1>
                 <p>The leading **External Quality Assessment Scheme (EQAS)** for clinical and medical laboratories. Ensure accurate, reliable results and achieve global accreditation.</p>
-                <a href="#register" class="cta-button">Enroll Your Lab Today</a>
+                <a href="#register" class="cta-button">Register Today</a>
             </div>
         </section>
 
@@ -275,25 +275,25 @@
                 <h2>Proficiency Testing Programs</h2>
                 <div class="program-row">
 
-                <div class="program-card">
+                <div class="program-card" onclick="window.open('https://www.ncgindia.org/key-initiatives/cb-qap','_blank')">
                     <img src="../assets/img/cbqap.png" alt="CBQAP Logo" class="logo-cbqap">
                     <h3>CB-QAP</h3>
                     <p>Clinical Biochemistry Quality Assurance Program</p>
                 </div>
  
-                <div class="program-card">
+                <div class="program-card" onclick="window.open('https://www.ncgindia.org/key-initiatives/molecular-pathology-qap','_blank')">
                     <img src="../assets/img/mpqap.png" alt="MPQAP Logo" class="logo-mpqap">
                     <h3>MP-QAP</h3>
                     <p>Molecular Pathology Quality Assurance Program</p>
                 </div>
 
-                <div class="program-card">
+                <div class="program-card" onclick="window.open('https://www.ncgindia.org/key-initiatives/ncg-eqas','_blank')">
                     <img src="../assets/img/eqas.png" alt="NCC-EQAS Logo" class="logo-ncg">
                     <h3>NCC-EQAS</h3>
                     <p>National Cancer Grid - External Quality Assurance Program</p>
                 </div>
 
-                <div class="program-card">
+                <div class="program-card" onclick="window.open('https://tmc.gov.in/event/upload/26122024_6/EQAS%20Diagnostic%20Cytopathology%20program%20details%202025%20(2).pdf','_blank')">
                     <img src="../assets/img/cyto-sample.png" alt="Cyto Logo" class="logo-cyto">
                     <h3>Cyto-EQAS</h3>
                     <p>Cytopathology External Quality Assurance Program</p>
@@ -327,6 +327,10 @@
             <div class="container">
                 <h2>Register Today</h2>
                 <p style="margin-bottom: 30px;">Fill out the form below to register for the initiative</p>
+                <button type="button" id="autofillDemo"
+                            style="float:right;margin-bottom:12px;background:#fff;color:#004d99;border:1px solid #004d99;border-radius:6px;padding:8px 12px;font-weight:700;cursor:pointer;">
+                    Autofill demo data
+                </button>
                 <form id="eqas-register" style="max-width: 720px; margin: 0 auto; text-align: left; padding: 30px; border: 1px solid #ccc; border-radius: 8px;">
                     <!-- 1. NCG membership -->
                     <label for="ncgMember" style="display:block;margin-bottom:6px;font-weight:700;">Are you a member of the National Cancer Grid?</label>
@@ -335,6 +339,7 @@
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
                     </select>
+                    
 
                     <!-- 2. Center Name -->
                     <label for="centerName" style="display:block;margin-bottom:6px;font-weight:700;">Center Name</label>
@@ -344,7 +349,7 @@
                     <!-- 3. Center Address (split) -->
                     <div class="form-grid">
                         <div class="form-col">
-                        <label for="addrBuilding" style="display:block;margin-bottom:6px;font-weight:700;">Building / Block / Flat</label>
+                        <label for="addrBuilding" style="display:block;margin-bottom:6px;font-weight:700;">Building / Block</label>
                         <input type="text" id="addrBuilding" name="addrBuilding" placeholder="Homi Bhabha Block" required
                                 style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;">
                         </div>
@@ -409,6 +414,98 @@
             <p>Contact: info@eqaspro.com | Call: (555) 123-4567</p>
         </div>
     </footer>
+<script>
+  (function () {
+    const form = document.getElementById('eqas-register');
+
+    // --- Autofill button (same as before) ---
+    const btnAutofill = document.getElementById('autofillDemo');
+    if (btnAutofill) {
+      function setVal(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      }
+
+      btnAutofill.addEventListener('click', () => {
+        setVal('ncgMember', 'Yes');
+        setVal('centerName', 'Tata Memorial Hospital');
+
+        setVal('addrBuilding', 'Homi Bhabha Block');
+        setVal('addrStreet', 'Dr. E Moses Rd, Parel');
+        setVal('addrCity', 'Mumbai');
+        setVal('addrState', 'Maharashtra');
+        setVal('addrPin', '400012');
+
+        setVal('contactName', 'Dr. A. Sharma');
+        setVal('contactEmail', 'a.sharma@example.org');
+
+        setVal('landline', '022-24177000');
+        setVal('mobile', '9876543210');
+
+        btnAutofill.textContent = 'Filled ✔';
+        setTimeout(() => (btnAutofill.textContent = 'Autofill demo data'), 1200);
+      });
+    }
+
+    function formToJSON(frm) {
+      const data = new FormData(frm);
+      return Object.fromEntries(data.entries());
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // HTML5 check
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      // Step 1: confirmation
+      const yes = window.confirm('Are you sure you want to submit registration?');
+      if (!yes) return;
+
+      // (Optional) serialize data, useful for your API call
+      const payload = formToJSON(form);
+      console.log('Submitting registration:', payload);
+
+      // Disable submit UI (optional)
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const oldLabel = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+      }
+
+      try {
+        // TODO: replace with your real API call
+        // await fetch('/api/register', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(payload),
+        // });
+
+        // Demo delay only
+        await new Promise((r) => setTimeout(r, 500));
+
+        // Step 2: success prompt
+        alert('Thank you for your registration. Details will be shared with you shortly.');
+
+        // Reset form for a fresh entry
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        alert('Something went wrong while submitting. Please try again.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = oldLabel || 'Submit Registration';
+        }
+      }
+    });
+  })();
+</script>
+
 
 </body>
 </html>
