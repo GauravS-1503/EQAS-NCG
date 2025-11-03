@@ -70,6 +70,8 @@
             gap: 30px;
         }
 
+        .hidden { display: none; }
+
         @media (max-width: 768px) {
             .payment-container {
                 grid-template-columns: 1fr;
@@ -294,61 +296,141 @@
 
             <div class="payment-form">
                 <h2 class="section-title">Payment Details</h2>
-                
+
                 <div class="payment-options">
-                    <div class="payment-option active">
-                        <div class="payment-icon">💳</div>
-                        <div>Credit Card</div>
-                    </div>
-                    <div class="payment-option">
-                        <div class="payment-icon">🏦</div>
-                        <div>Bank Transfer</div>
-                    </div>
-                    <div class="payment-option">
-                        <div class="payment-icon">📱</div>
-                        <div>Mobile Payment</div>
-                    </div>
+                <div class="payment-option active" data-mode="card">
+                    <div class="payment-icon">💳</div>
+                    <div>Credit Card</div>
+                </div>
+                <div class="payment-option" data-mode="bank">
+                    <div class="payment-icon">🏦</div>
+                    <div>Bank Transfer</div>
+                </div>
                 </div>
 
                 <form id="payment-form">
+                <!-- ===== Card fields ===== -->
+                <div id="card-fields">
                     <div class="form-group">
-                        <label for="cardholder">Cardholder Name</label>
-                        <input type="text" id="cardholder" placeholder="John Doe" required>
+                    <label for="cardholder">Cardholder Name</label>
+                    <input type="text" id="cardholder" placeholder="John Doe">
                     </div>
 
                     <div class="form-group">
-                        <label for="cardnumber">Card Number</label>
-                        <input type="text" id="cardnumber" placeholder="1234 5678 9012 3456" required>
+                    <label for="cardnumber">Card Number</label>
+                    <input type="text" id="cardnumber" placeholder="1234 5678 9012 3456">
                     </div>
 
                     <div class="card-details">
-                        <div class="form-group">
-                            <label for="expiry">Expiry Date</label>
-                            <input type="text" id="expiry" placeholder="MM/YY" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" placeholder="123" required>
-                        </div>
+                    <div class="form-group">
+                        <label for="expiry">Expiry Date</label>
+                        <input type="text" id="expiry" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123">
+                    </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="country">Country</label>
-                        <select id="country" required>
-                            <option value="">Select Country</option>
-                            <option value="us">United States</option>
-                            <option value="uk">United Kingdom</option>
-                            <option value="ca">Canada</option>
-                            <option value="au">Australia</option>
-                        </select>
+                    <label for="country">Country</label>
+                    <select id="country">
+                        <option value="">Select Country</option>
+                        <option value="us">United States</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="ca">Canada</option>
+                        <option value="au">Australia</option>
+                    </select>
+                    </div>
+                </div>
+
+                <!-- ===== Bank fields ===== -->
+                <div id="bank-fields" class="hidden">
+                    <!-- Static Bank Info -->
+                    <div class="order-summary" style="margin-bottom:16px;">
+                    <h3 class="section-title" style="margin-top:-4px;">Bank Details</h3>
+                    <p class="fw-bold fs-5">1. Mode of payment: NEFT or Demand Draft</p>
+                    <p class="fw-bold fs-5">2. Bank Name: Central Bank of India</p>
+                    <p class="fw-bold fs-5">3. Bank Account No: 1002449683</p>
+                    <p class="fw-bold fs-5">4. Branch: Tata Memorial Hospital</p>
+                    <p class="fw-bold fs-5">5. Bank Address: Parel, Mumbai 400012</p>
+                    <p class="fw-bold fs-5">6. City: Mumbai</p>
+                    <p class="fw-bold fs-5">7. Telephone No: 022-24177000, Ext. 4578</p>
+                    <p class="fw-bold fs-5">8. IFSC: CBIN0284241</p>
+                    <p class="fw-bold fs-5">9. A/c type: Current</p>
+                    <p class="fw-bold fs-5">10. A/c Name: TATA MEMORIAL HOSPITAL NCGEQAS A/C 3332</p>
+                    <p class="fw-bold fs-5">11. GST No: 27AAATT3620R1Z1</p>
+                    <p class="fw-bold fs-5">12. PAN: AAATT3620R</p>
                     </div>
 
-                    <button type="submit" class="pay-button">Pay $770.00</button>
-                    
-                    <div class="secure-payment">
-                        <i>🔒</i> Your payment is secure and encrypted
+                    <!-- Transaction Details -->
+                    <div class="form-group">
+                    <label for="transactionId">1. UTR / Reference No. / DD No. *</label>
+                    <input type="text" id="transactionId" placeholder="Enter value" required>
                     </div>
-                </form>
+
+                    <div class="form-group">
+                    <label for="orgname">2. Name of the organization *</label>
+                    <input type="text" id="orgname" placeholder="Enter name" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="accholder">3. Name of the account holder *</label>
+                    <input type="text" id="accholder" placeholder="Enter name" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="panno">4. PAN of the organization *</label>
+                    <input type="text" id="panno" placeholder="ABCDE1234F" maxlength="10" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="bank">5. Name of the bank and branch *</label>
+                    <input type="text" id="bank" placeholder="Enter bank & branch" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="date">6. Date of payment *</label>
+                    <input type="date" id="date" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label class="form-label">7. Do you have a GST number? *</label>
+                    <div style="display:flex; gap:16px; align-items:center;">
+                        <label><input type="radio" name="gstOption" value="yes"> Yes</label>
+                        <label><input type="radio" name="gstOption" value="no"> No</label>
+                    </div>
+                    </div>
+
+                    <div class="form-group hidden" id="gstInput">
+                    <label for="gstNumber">Enter GST Number</label>
+                    <input type="text" id="gstNumber" placeholder="22AAAAA0000A1Z5">
+                    </div>
+
+                    <div class="form-group hidden" id="certificateUpload">
+                    <label for="certificateFile">Upload GST Exemption Certificate</label>
+                    <input type="file" id="certificateFile" accept=".pdf,.jpg,.jpeg,.png">
+                    </div>
+
+                    <div class="form-group">
+                    <div style="display:flex; gap:12px; align-items:center; justify-content:flex-start;">
+                        <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('attachmentInput').click()"
+                                style="padding:10px 14px; border:1px solid #3498db; background:#fff; color:#3498db; border-radius:6px; cursor:pointer;">
+                        Add Transaction Proof (PDF/Image)
+                        </button>
+                        <span id="fileName" class="text-muted" style="font-size:14px;"></span>
+                    </div>
+                    <input type="file" id="attachmentInput" class="d-none" onchange="showFileName()" accept=".pdf,.jpg,.jpeg,.png" style="display:none;">
+                    </div>
+                </div>
+
+                <button id="submitBtn" type="submit" class="pay-button">Pay $770.00</button>
+
+                <div class="secure-payment">
+                    <i>🔒</i> Your payment is secure and encrypted
+                </div>
+            </form>
+
             </div>
         </div>
     </div>
@@ -360,22 +442,150 @@
     </footer>
 
     <script>
-        // Simple JavaScript to handle payment option selection
-        document.querySelectorAll('.payment-option').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('.payment-option').forEach(opt => {
-                    opt.classList.remove('active');
-                });
-                this.classList.add('active');
+        // --- Utility: show chosen file name
+        function showFileName() {
+            const input = document.getElementById('attachmentInput');
+            const fileNameDisplay = document.getElementById('fileName');
+            fileNameDisplay.textContent = input.files.length ? input.files[0].name : "";
+        }
+
+        // --- Toggle payment modes
+        const options = document.querySelectorAll('.payment-option');
+        const cardFields = document.getElementById('card-fields');
+        const bankFields = document.getElementById('bank-fields');
+        const submitBtn  = document.getElementById('submitBtn');
+        let mode = 'card';
+
+        options.forEach(opt => {
+            opt.addEventListener('click', () => {
+            options.forEach(o => o.classList.remove('active'));
+            opt.classList.add('active');
+            mode = opt.dataset.mode;
+
+            if (mode === 'card') {
+                cardFields.classList.remove('hidden');
+                bankFields.classList.add('hidden');
+                submitBtn.textContent = 'Pay $770.00';
+            } else {
+                cardFields.classList.add('hidden');
+                bankFields.classList.remove('hidden');
+                submitBtn.textContent = 'Submit Details';
+            }
             });
         });
 
-        // Form submission handler
-        document.getElementById('payment-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Payment processing would happen here. In a real application, this would connect to a payment gateway.');
-            // In a real application, you would process the payment here
+        // --- GST radio show/hide
+        const gstRadios = document.getElementsByName('gstOption');
+        const gstInput = document.getElementById('gstInput');
+        const certificateUpload = document.getElementById('certificateUpload');
+
+        gstRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+            if (radio.value.toLowerCase() === 'yes') {
+                gstInput.classList.remove('hidden');
+                certificateUpload.classList.add('hidden');
+            } else {
+                gstInput.classList.add('hidden');
+                certificateUpload.classList.remove('hidden');
+            }
+            });
         });
+
+
+        // --- Branding from ?program=
+        const qs        = new URLSearchParams(window.location.search);
+        const programNm = qs.get('program') || '';
+        const programKey = (qs.get('key') || '');          // program key passed from dashboard
+        const brandKey  = programNm.trim().toUpperCase().replace(/\s+/g,'_');
+
+        if (programNm) {
+        document.title = `Payment - ${programNm} | EQA System`;
+        const pageTitle = document.querySelector('.page-title');
+        if (pageTitle) pageTitle.textContent = `Complete Your Payment for ${programNm}`;
+        document.querySelectorAll('.module-name').forEach(el => el.textContent = `${programNm} Module`);
+        }
+
+        const colors = { MPQAP:"#2563eb", CBQAP:"#0d9488", NCG_EQAS:"#ca8a04", CYTOEQAS:"#db2777" };
+        const logos  = {
+        MPQAP:"/assets/img/mpqap.png",
+        CBQAP:"/assets/img/cbqap.png",
+        NCG_EQAS:"/assets/img/eqas.png",
+        CYTOEQAS:"/assets/img/cyto-sample.png"
+        };
+
+        const header = document.querySelector('header');
+        if (header) header.style.backgroundColor = colors[brandKey] || "#2c3e50";
+
+        const logoContainer = document.querySelector('.logo');
+        if (logoContainer && logos[brandKey]) {
+        logoContainer.innerHTML = `<img src="${logos[brandKey]}" alt="${programNm} Logo" style="height:40px;vertical-align:middle;margin-right:10px;"> ${programNm} Payment`;
+        }
+
+        // --- Submit handler (REPLACE your existing submit handler with this one)
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (mode === 'card') {
+            alert('Payment processing would happen here (gateway).');
+
+            // Mark as paid and go back
+            if (programKey) {
+            const payments = JSON.parse(localStorage.getItem('payments') || '{}');
+            payments[programKey] = { status: 'paid', date: new Date().toISOString().slice(0,10) };
+            localStorage.setItem('payments', JSON.stringify(payments));
+            }
+            window.location.href = 'dashboard.html';
+            return;
+        }
+
+        // BANK MODE
+        const data = {
+            program: programNm,
+            transactionId: document.getElementById('transactionId').value.trim(),
+            orgname: document.getElementById('orgname').value.trim(),
+            accholder: document.getElementById('accholder').value.trim(),
+            panno: document.getElementById('panno').value.trim(),
+            bank: document.getElementById('bank').value.trim(),
+            date: document.getElementById('date').value,
+            gstOption: [...document.getElementsByName('gstOption')].find(r => r.checked)?.value || '',
+            gstNumber: document.getElementById('gstNumber').value.trim(),
+            attachment: document.getElementById('attachmentInput').files[0]?.name || ''
+        };
+
+        const required = ['transactionId','orgname','accholder','panno','bank','date'];
+        const missing = required.filter(k => !data[k]);
+        if (missing.length) {
+            alert('Please fill required fields: ' + missing.join(', '));
+            return;
+        }
+
+        alert(
+        `Bank Transfer Details Submitted:
+
+        Program: ${data.program}
+        UTR/Ref/DD: ${data.transactionId}
+        Organization: ${data.orgname}
+        Account Holder: ${data.accholder}
+        PAN: ${data.panno}
+        Bank & Branch: ${data.bank}
+        Date: ${data.date}
+        GST Provided: ${data.gstOption}
+        GST Number: ${data.gstNumber || '-'}
+        Attachment: ${data.attachment || '-'}
+        `);
+
+        // Mark as paid and go back
+        if (programKey) {
+            const payments = JSON.parse(localStorage.getItem('payments') || '{}');
+            payments[programKey] = { status: 'paid', date: new Date().toISOString().slice(0,10) };
+            localStorage.setItem('payments', JSON.stringify(payments));
+        }
+        window.location.href = 'dashboard.html';
+        });
+
+
+
     </script>
+
 </body>
 </html>

@@ -22,7 +22,7 @@
   <header class="bg-white shadow-md z-10">
     <div class="px-4 sm:px-6 lg:px-8 lg:ml-[250px] py-4 flex justify-between items-center">
       <h1 class="text-2xl font-bold text-blue-800">EQAS Program Dashboard</h1>
-      <span class="text-sm text-gray-500">Select a Scheme</span>
+      <span class="text-sm text-gray-500">Participant Lab ID</span>
     </div>
   </header>
 
@@ -54,35 +54,36 @@
       <div id="program-cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
         <!-- MPQAP -->
         <div class="program-card bg-white p-6 rounded-xl shadow-lg border-t-4 border-blue-600" data-program="mpqap">
-          <div class="text-4xl mb-4 text-blue-600">🔬</div>
-          <h2 class="text-xl font-semibold text-gray-800 mb-2">MPQAP</h2>
-          <p class="text-gray-500 text-sm">Molecular Pathology Quality Assurance Program. Focuses on DNA/RNA testing proficiency.</p>
-          <button class="mt-4 text-blue-600 font-medium hover:text-blue-800">Enrollment Details →</button>
+          <img src="/assets/img/mpqap.png" alt="MPQAP Logo" class="mx-auto mb-4 h-20 object-contain">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2 text-center">MPQAP</h2>
+          <p class="text-gray-500 text-sm text-center">Molecular Pathology Quality Assurance Program. Focuses on DNA/RNA testing proficiency.</p>
+          <button class="block mx-auto mt-4 text-blue-600 font-medium hover:text-blue-800">Enrollment Details →</button>
         </div>
 
         <!-- CBQAP -->
         <div class="program-card bg-white p-6 rounded-xl shadow-lg border-t-4 border-teal-600" data-program="cbqap">
-          <div class="text-4xl mb-4 text-teal-600">🧬</div>
-          <h2 class="text-xl font-semibold text-gray-800 mb-2">CBQAP</h2>
-          <p class="text-gray-500 text-sm">Clinical Biochemistry Quality Assurance Program. Covers general chemistry and clinical assays.</p>
-          <button class="mt-4 text-teal-600 font-medium hover:text-teal-800">Enrollment Details →</button>
+          <img src="/assets/img/cbqap.png" alt="CBQAP Logo" class="mx-auto mb-4 h-20 object-contain">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2 text-center">CBQAP</h2>
+          <p class="text-gray-500 text-sm text-center">Clinical Biochemistry Quality Assurance Program. Covers general chemistry and clinical assays.</p>
+          <button class="block mx-auto mt-4 text-teal-600 font-medium hover:text-teal-800">Enrollment Details →</button>
         </div>
 
         <!-- NCG EQAS -->
         <div class="program-card bg-white p-6 rounded-xl shadow-lg border-t-4 border-yellow-600" data-program="ncgeqas">
-          <div class="text-4xl mb-4 text-yellow-600">🏛️</div>
-          <h2 class="text-xl font-semibold text-gray-800 mb-2">NCG EQAS</h2>
-          <p class="text-gray-500 text-sm">National Centralized Genomic EQAS. For high-throughput next-generation sequencing labs.</p>
-          <button class="mt-4 text-yellow-600 font-medium hover:text-yellow-800">Enrollment Details →</button>
+          <img src="/assets/img/eqas.png" alt="NCG EQAS Logo" class="mx-auto mb-4 h-20 object-contain">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2 text-center">NCG EQAS</h2>
+          <p class="text-gray-500 text-sm text-center">National Cancer Grid EQAS. For standardizing histopathology techniques and diagnostics.</p>
+          <button class="block mx-auto mt-4 text-yellow-600 font-medium hover:text-yellow-800">Enrollment Details →</button>
         </div>
 
         <!-- CYTOEQAS -->
         <div class="program-card bg-white p-6 rounded-xl shadow-lg border-t-4 border-pink-600" data-program="cytoeqas">
-          <div class="text-4xl mb-4 text-pink-600">🦠</div>
-          <h2 class="text-xl font-semibold text-gray-800 mb-2">CYTOEQAS</h2>
-          <p class="text-gray-500 text-sm">Cytopathology External Quality Assessment Scheme. Focuses on smear and cell morphology.</p>
-          <button class="mt-4 text-pink-600 font-medium hover:text-pink-800">Enrollment Details →</button>
+          <img src="/assets/img/cyto-sample.png" alt="CYTO EQAS Logo" class="mx-auto mb-4 h-20 object-contain">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2 text-center">CYTOEQAS</h2>
+          <p class="text-gray-500 text-sm text-center">Cytopathology External Quality Assessment Scheme. Focuses on smear and cell morphology.</p>
+          <button class="block mx-auto mt-4 text-pink-600 font-medium hover:text-pink-800">Enrollment Details →</button>
         </div>
+
 
         <!-- Modules enrolled + Payment Brackets -->
         <div id="enrolled-card" class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-purple-600 col-span-1 sm:col-span-2 md:col-span-3 xl:col-span-4">
@@ -175,8 +176,22 @@
   </div>
 
   <script>
+
+    console.log('dashboard loaded at', new Date().toISOString(), location.href);
+
+    const navEntry = performance.getEntriesByType('navigation')[0];
+    console.log('nav type:', navEntry ? navEntry.type : 'unknown');
+
+    window.addEventListener('pageshow', (e) => {
+      console.log('pageshow (persisted from bfcache?):', e.persisted);
+    });
+    window.addEventListener('beforeunload', () => {
+      console.log('dashboard beforeunload fired');
+    });
     // ====== CONFIGURE PAYMENT BRACKETS HERE ======
     // feeINR is display-only here; route links can be internal or external.
+    function getPayments(){ try { return JSON.parse(localStorage.getItem('payments')||'{}'); } catch { return {}; } }
+    function setPayments(obj){ localStorage.setItem('payments', JSON.stringify(obj)); }
     const PAYMENT_BRACKETS = {
       mpqap: { label: "MPQAP",  feeINR: 7500, route: "/pay/mpqap"  },
       cbqap: { label: "CBQAP",  feeINR: 6500, route: "/pay/cbqap"  },
@@ -320,6 +335,17 @@
         const fee = bracket?.feeINR ?? 0;
         total += fee;
 
+        // payment status
+        const payments = getPayments();
+        const pinfo = payments[key];
+        const isPaid = pinfo?.status === 'paid';
+        const statusText = isPaid
+          ? `Paid on ${new Date(pinfo.date).toLocaleDateString('en-IN')}`
+          : 'Unpaid';
+        const statusClass = isPaid
+          ? 'bg-green-50 text-green-700 border-green-200'
+          : 'bg-amber-50 text-amber-700 border-amber-200';
+
         const div = document.createElement('div');
         div.className = 'border rounded-xl p-4 shadow-sm bg-white flex flex-col justify-between';
         div.innerHTML = `
@@ -328,9 +354,30 @@
             <h4 class="text-lg font-semibold text-gray-900 mt-1">${name}</h4>
             <p class="text-gray-500 text-sm mt-1">Annual program fee</p>
             <div class="mt-3 text-2xl font-bold">₹${fee.toLocaleString('en-IN')}</div>
+
+            <div class="mt-3">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full border text-xs font-medium ${statusClass}">
+                ${statusText}
+              </span>
+            </div>
           </div>
-          <div class="mt-4 flex items-center gap-2">
-            <a href="payment.html" class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-white bg-purple-600 hover:bg-purple-700 shadow transition">Pay for ${name} →</a>
+
+          <div class="mt-4 flex flex-wrap items-center gap-2">
+            <a href="payment.html?program=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}"
+              class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-white bg-purple-600 hover:bg-purple-700 shadow transition">
+              Pay for ${name} →
+            </a>
+
+            <button data-action="edit" data-key="${key}"
+                    class="text-sm px-3 py-1 rounded bg-blue-50 text-blue-700 hover:bg-blue-100">
+              Edit
+            </button>
+
+            <button data-action="remove" data-key="${key}"
+                    class="text-sm px-3 py-1 rounded bg-red-50 text-red-700 hover:bg-red-100">
+              Remove
+            </button>
+
             <a href="fees/${key}" class="text-sm text-gray-500 hover:text-gray-700 underline">Fee details</a>
           </div>
         `;
@@ -346,6 +393,32 @@
         renderEnrolledUI();
       }
     });
+
+    paymentGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+
+      const action = btn.dataset.action;
+      const key = btn.dataset.key;
+      const items = getEnrolled();
+
+      if (action === 'remove') {
+        // remove from enrolled + clear payment status
+        const next = items.filter(x => x.key !== key);
+        setEnrolled(next);
+        const pay = getPayments(); delete pay[key]; setPayments(pay);
+        renderEnrolledUI();
+        return;
+      }
+
+      if (action === 'edit') {
+        const found = items.find(x => x.key === key);
+        const name = found?.name || key.toUpperCase();
+        showModal(name, key); // re-use your existing enrollment modal
+        return;
+      }
+    });
+
 
     // Form submit -> save enrollment + refresh UI
     enrollmentForm.addEventListener('submit', function(e){
@@ -364,6 +437,8 @@
         renderEnrolledUI();
       },800);
     });
+
+   
 
     // Initial paint
     renderEnrolledUI();
