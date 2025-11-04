@@ -63,6 +63,34 @@
             color: #ffcc00; /* Yellow accent */
         }
 
+
+        /* keep header bar in one line */
+        header .container > div{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:20px;
+        }
+
+        /* make the menu a no-wrap flex row */
+        nav ul{
+        display:flex;
+        align-items:center;
+        gap:25px;         /* replaces li margins */
+        flex-wrap:nowrap; /* prevent wrapping */
+        white-space:nowrap;
+        list-style:none;
+        margin:0;
+        padding:0;
+        text-align:right; /* optional */
+        }
+
+        nav ul li{
+        display:block;    /* no inline wrapping */
+        margin:0;         /* gap handles spacing */
+        }
+
+
         /* Hero Section */
         .hero {
             background-color: #fff;
@@ -248,7 +276,7 @@
     <header>
         <div class="container">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="logo">NCG External Quality Assessment Scheme</div>
+                <div class="logo">NCG Quality Assurance Program - Diagnostic Laboratory</div>
                 <nav>
                     <ul>
                         <li><a href="#about">About Us</a></li>
@@ -289,14 +317,14 @@
 
                 <div class="program-card" onclick="window.open('https://www.ncgindia.org/key-initiatives/ncg-eqas','_blank')">
                     <img src="../assets/img/eqas.png" alt="NCC-EQAS Logo" class="logo-ncg">
-                    <h3>NCC-EQAS</h3>
+                    <h3>NCG-EQAS</h3>
                     <p>National Cancer Grid - External Quality Assurance Program</p>
                 </div>
 
                 <div class="program-card" onclick="window.open('https://tmc.gov.in/event/upload/26122024_6/EQAS%20Diagnostic%20Cytopathology%20program%20details%202025%20(2).pdf','_blank')">
                     <img src="../assets/img/cyto-sample.png" alt="Cyto Logo" class="logo-cyto">
-                    <h3>Cyto-EQAS</h3>
-                    <p>Cytopathology External Quality Assurance Program</p>
+                    <h3>CYTO-QAP</h3>
+                    <p>Cytopathology Quality Assurance Program</p>
                 </div>
 
                 </div>
