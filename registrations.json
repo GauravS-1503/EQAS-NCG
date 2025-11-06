@@ -4,5 +4,107 @@
     "contactName": "Test Contact",
     "contactEmail": "test@test.com",
     "mobile": "1234567890"
+  },
+  {
+    "ncgMember": "Yes",
+    "centerName": "Tata Memorial Hospital",
+    "addrBuilding": "Homi Bhabha Block",
+    "addrStreet": "Dr. E Moses Rd, Parel",
+    "addrCity": "Mumbai",
+    "addrState": "Maharashtra",
+    "addrPin": "400012",
+    "contactName": "Dr. A. Sharma",
+    "contactEmail": "a.sharma@example.org",
+    "landline": "022-24177000",
+    "mobile": "9876543210",
+    "enrollChoice": "now",
+    "tm-year-1": "2025",
+    "tm-machine-1": "Beckman",
+    "tm-method-1": "ECLIA",
+    "tm-markers-1": "β-hCG",
+    "SPE-SPE-year-1": "2025",
+    "SPE-SPE-machine-1": "Sebia",
+    "SPE-SPE-method-1": "ECLIA",
+    "SPE-Immunoglobulin Quantification-year-1": "2025",
+    "SPE-Immunoglobulin Quantification-machine-1": "Helena",
+    "SPE-Immunoglobulin Quantification-method-1": "CMIA",
+    "SPE-Free Light Chain Quantification-year-1": "2025",
+    "SPE-Free Light Chain Quantification-machine-1": "Optilite",
+    "SPE-Free Light Chain Quantification-method-1": "CMIA",
+    "IFE-IFE-year-1": "2025",
+    "IFE-IFE-machine-1": "Sebia Hydrasys",
+    "IFE-IFE-method-1": "ELISA",
+    "enrollment": {
+      "enrollNow": true,
+      "programs": [
+        {
+          "programKey": "CBQAP",
+          "programLabel": "CB-QAP",
+          "data": {
+            "program": "CBQAP",
+            "tmSets": [
+              {
+                "year": "2025",
+                "machine": "Beckman",
+                "method": "ECLIA",
+                "methodOther": "",
+                "markers": [
+                  "AFP",
+                  "β-hCG"
+                ]
+              }
+            ],
+            "electrophoresis": {
+              "SPE": {
+                "rows": [
+                  {
+                    "subdivision": "SPE",
+                    "year": "2025",
+                    "machine": "Sebia",
+                    "method": "ECLIA",
+                    "methodOther": ""
+                  },
+                  {
+                    "subdivision": "Immunoglobulin Quantification",
+                    "year": "2025",
+                    "machine": "Helena",
+                    "method": "CMIA",
+                    "methodOther": ""
+                  },
+                  {
+                    "subdivision": "Free Light Chain Quantification",
+                    "year": "2025",
+                    "machine": "Optilite",
+                    "method": "CMIA",
+                    "methodOther": ""
+                  }
+                ]
+              },
+              "IFE": {
+                "rows": [
+                  {
+                    "subdivision": "IFE",
+                    "year": "2025",
+                    "machine": "Sebia Hydrasys",
+                    "method": "ELISA",
+                    "methodOther": ""
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "programKey": "MPQAP",
+          "programLabel": "MP-QAP",
+          "data": {
+            "program": "MPQAP",
+            "module": "EGFR",
+            "cycle": "Cycle 1",
+            "year": "2025"
+          }
+        }
+      ]
+    }
   }
 ]

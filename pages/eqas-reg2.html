@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NCG External Quality Assessment Scheme</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ncg-blue:#004d99;
+      --ncg-green:#00994d;
+      --ncg-yellow:#ffcc00;
+      --bg:#f4f7f6;
+      --card:#ffffff;
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --radius:10px;
+      --shadow:0 8px 20px rgba(2,6,23,.06);
+      --focus:0 0 0 3px rgba(0,77,153,.18);
+      --field-h:46px;
+    }
+
+    /* Reset / base */
+    *,*::before,*::after{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+      line-height:1.5;
+    }
+    img{ max-width:100%; display:block; }
+    .container{
+      width:min(1280px,94vw);
+      margin-inline:auto;
+      padding:20px 0;
+    }
+
+    /* Header */
+    header{
+      background:var(--ncg-blue);
+      color:#fff;
+      box-shadow:0 2px 10px rgba(0,0,0,.08);
+    }
+    header .row{
+      display:flex; align-items:center; justify-content:space-between; gap:20px;
+      padding:16px 0;
+    }
+    .logo{ font-size:1.25rem; font-weight:700; letter-spacing:.2px; }
+    nav ul{ display:flex; gap:22px; list-style:none; margin:0; padding:0; white-space:nowrap; }
+    nav a{ color:#fff; text-decoration:none; font-weight:500; }
+    nav a:hover{ color:var(--ncg-yellow); }
+
+    /* Hero (brief) */
+    .hero{
+      background:#fff;
+      border-bottom:4px solid var(--ncg-yellow);
+      padding:40px 0;
+      text-align:center;
+    }
+    .hero h1{ color:var(--ncg-blue); font-size:2rem; margin:0 0 8px; }
+    .hero p{ color:#4b5563; max-width:800px; margin:0 auto; }
+
+    /* Form card */
+    .form-wrap{
+      margin:32px auto;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:28px;
+      width:min(100%);
+      padding:32px;
+    }
+
+    .section{
+      margin:10px 0 26px;
+    }
+    .section-title{
+      display:flex; align-items:center; justify-content:space-between;
+      font-weight:700; color:var(--ncg-blue);
+      margin:0 0 12px;
+    }
+    .section hr{
+      border:none; height:1px; background:var(--border);
+      margin:8px 0 18px;
+    }
+
+    /* Grid helpers */
+    .grid{
+      display:grid; gap:14px;
+    }
+    .grid.cols-2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .grid.cols-3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .grid.responsive{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+    @media (max-width:720px){
+      .grid.responsive, .grid.cols-2, .grid.cols-3{ grid-template-columns:1fr; }
+    }
+
+    /* Fields */
+    label{ display:block; font-weight:600; font-size:.92rem; margin:2px 0 6px; color:#111827; }
+    input,select,textarea,button{
+      font:inherit; color:inherit;
+    }
+    .field{
+      width:100%; height:var(--field-h);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:10px 12px;
+      background:#fff;
+      outline:none;
+      transition:.15s border-color ease, .15s box-shadow ease;
+    }
+    .field:focus{ border-color:var(--ncg-blue); box-shadow:var(--focus); }
+    .help{ font-size:.82rem; color:var(--muted); margin-top:4px; }
+
+    /* CTA */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      height:48px; padding:0 18px; border-radius:8px; border:0; cursor:pointer;
+      font-weight:700;
+      transition:.15s transform ease, .15s background ease, .15s opacity ease;
+    }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+    .btn-primary{ background:var(--ncg-green); color:#fff; width:100%; }
+    .btn-primary:hover{ background:#077b3f; transform:translateY(-1px); }
+    .btn-outlined{
+      background:#fff; color:var(--ncg-blue);
+      border:1px solid var(--ncg-blue);
+      height:38px; padding:0 12px; border-radius:8px; font-weight:700;
+    }
+
+    /* Autofill */
+    #autofillDemo{ float:right; margin-bottom:12px; }
+
+    /* Enrollment */
+    .enroll-choice{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
+    .radio{
+      display:flex; align-items:center; gap:8px; padding:10px 12px;
+      border:1px solid var(--border); border-radius:999px; background:#fff;
+    }
+    .radio input{ accent-color:var(--ncg-blue); }
+
+    .programs-grid{
+      display:grid; gap:14px;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+    @media (max-width:900px){ .programs-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:520px){ .programs-grid{ grid-template-columns:1fr; } }
+
+    .program-card{
+      border:1px solid var(--border);
+      border-radius:12px; padding:14px;
+      display:flex; gap:12px; align-items:center;
+      transition:.15s box-shadow ease, .15s border-color ease, .15s transform ease;
+      background:#fff;
+      cursor:pointer;
+    }
+    .program-card:hover{ box-shadow:var(--shadow); transform:translateY(-1px); }
+    .program-card input{ accent-color:var(--ncg-blue); width:18px; height:18px; }
+    .program-card .meta{ display:flex; align-items:center; gap:12px; }
+    .program-card .meta img{ width:auto; height:44px; object-fit:contain; }
+    .program-card h4{ margin:0; font-size:1rem; }
+
+    .program-details{
+      margin-top:14px; padding:14px;
+      border:1px dashed var(--border); border-radius:10px;
+      background:#fafafa;
+    }
+    .program-details h5{ margin:0 0 10px; font-size:1rem; color:#0f172a; }
+    .detail-grid{ display:grid; gap:12px; grid-template-columns:2fr 1fr 1fr; }
+    @media (max-width:720px){ .detail-grid{ grid-template-columns:1fr; } }
+
+    /* --- Enrollment UI helpers --- */
+    .bucket-title{margin:0 0 6px;font-size:1.1rem}
+    .subcard{border:1px dashed #e5e7eb;border-radius:10px;padding:14px;background:#fafafa;margin-top:10px}
+    .row-3,.row-4{display:grid;gap:12px}
+    .row-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .row-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    @media (max-width:800px){.row-3,.row-4{grid-template-columns:1fr}}
+    .mini-field label{font-weight:600;font-size:.9rem;margin-bottom:4px;display:block}
+    .mini-field input,.mini-field select{width:100%;height:42px;border:1px solid #e5e7eb;border-radius:8px;padding:8px 10px}
+    .bucket-grid{display:grid;gap:8px}
+    .bucket-grid.small{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:800px){.bucket-grid.small{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    .checkcard{display:flex;align-items:center;gap:8px;border:1px solid #e5e7eb;border-radius:8px;padding:8px 10px;background:#fff}
+    .btn{height:38px;padding:0 12px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;cursor:pointer}
+    .btn-primary{background:#00994d;color:#fff;border-color:#00994d}
+    .subactions{display:flex;gap:8px;align-items:center}
+    .notice{margin-top:12px;padding:10px 12px;border-radius:8px;border:1px solid #e5e7eb}
+    .notice.info{background:#f8fafc}
+    .notice.success{background:#ecfdf5;border-color:#10b981}
+    .hidden{display:none}
+
+    .program-title { margin: 12px 0 8px; font-weight: 700; color: #004d99; }
+    .program-details { border: 1px dashed #e5e7eb; background: #fafafa; border-radius: 10px; padding: 12px; margin-top: 12px; }
+    .program-body { margin-top: 8px; }
+
+    .bucket-grid.small { 
+    grid-template-columns: repeat(3, minmax(0, 1fr)); 
+    gap: 10px;
+    }
+
+    .checkcard{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: #fff;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    /* Keep label text readable */
+    .checkcard span{
+    font-size: 0.95rem;
+    color: #111827;
+    }
+
+    /* Make the checkbox small and align it to the right */
+    .checkcard input[type="checkbox"]{
+    appearance: auto;           /* use native checkbox */
+    width: 16px !important;     /* cap size */
+    height: 16px !important;
+    margin-left: auto;          /* push to right edge */
+    flex: 0 0 auto;
+    }
+
+    /* Hover and selected feedback */
+    .checkcard:hover{ 
+    border-color: #cbd5e1; 
+    box-shadow: 0 2px 10px rgba(2,6,23,.06);
+    }
+    .checkcard:has(input:checked){
+    border-color: #004d99;
+    background: #f8fbff;
+    box-shadow: inset 0 0 0 2px rgba(0,77,153,.10);
+    }
+
+    /* On narrow screens, use 2 columns for comfort */
+    @media (max-width: 700px){
+    .bucket-grid.small{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+
+
+    /* Footer */
+    footer{ text-align:center; color:#e5e7eb; background:#111827; padding:20px 0; margin-top:38px; }
+    footer a{ color:#ffffff; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="row">
+        <div class="logo">NCG Quality Assurance Program – Diagnostic Laboratory</div>
+        <nav>
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#register">Register</a></li>
+            <li><a href="./dashboard.html">Login</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Register for NCG QAP-DL</h1>
+      <p>Fill the registration form to become a part of the NCG QAP-DL program</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <button id="autofillDemo" type="button" class="btn btn-outlined">Autofill demo data</button>
+
+    <form id="eqas-register" class="form-wrap" novalidate>
+      <!-- Lab Details -->
+      <section class="section">
+        <div class="section-title">Lab Details</div>
+        <hr/>
+        <div class="grid responsive">
+          <div>
+            <label for="ncgMember">Are you a member of the National Cancer Grid?</label>
+            <select id="ncgMember" name="ncgMember" class="field" required>
+              <option value="">— Select —</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div>
+            <label for="centerName">Center Name</label>
+            <input id="centerName" name="centerName" class="field" placeholder="Tata Memorial Hospital" required/>
+          </div>
+        </div>
+
+        <div class="grid cols-3" style="margin-top:10px;">
+          <div>
+            <label for="addrBuilding">Building / Block</label>
+            <input id="addrBuilding" name="addrBuilding" class="field" placeholder="Homi Bhabha Block" required/>
+          </div>
+          <div>
+            <label for="addrStreet">Street / Area</label>
+            <input id="addrStreet" name="addrStreet" class="field" placeholder="Parel, Dr. E Moses Rd" required/>
+          </div>
+          <div>
+            <label for="addrCity">City</label>
+            <input id="addrCity" name="addrCity" class="field" placeholder="Mumbai" required/>
+          </div>
+          <div>
+            <label for="addrState">State</label>
+            <input id="addrState" name="addrState" class="field" placeholder="Maharashtra" required/>
+          </div>
+          <div>
+            <label for="addrPin">PIN Code</label>
+            <input id="addrPin" name="addrPin" class="field" inputmode="numeric" pattern="^[1-9][0-9]{5}$" title="Enter a valid 6-digit Indian PIN (no leading 0)." placeholder="400012" required/>
+          </div>
+        </div>
+      </section>
+
+      <!-- Primary Contact -->
+      <section class="section">
+        <div class="section-title">Primary Contact</div>
+        <hr/>
+        <div class="grid cols-2">
+          <div>
+            <label for="contactName">Name of Technician/Doctor</label>
+            <input id="contactName" name="contactName" class="field" placeholder="Dr. A. Sharma" required/>
+          </div>
+          <div>
+            <label for="contactEmail">Email</label>
+            <input id="contactEmail" name="contactEmail" class="field" type="email" placeholder="name@example.com" required/>
+          </div>
+        </div>
+        <div class="grid cols-2" style="margin-top:10px;">
+          <div>
+            <label for="landline">Lab Landline</label>
+            <input id="landline" name="landline" class="field" placeholder="022-24177000 or 02224177000" pattern="^0?[0-9]{2,4}[- ]?[0-9]{6,8}$" title="Enter STD code + number (e.g., 022-24177000)."/>
+          </div>
+          <div>
+            <label for="mobile">Mobile Number</label>
+            <input id="mobile" name="mobile" class="field" inputmode="numeric" pattern="^[6-9][0-9]{9}$" title="10-digit Indian mobile starting with 6–9." placeholder="9876543210" required/>
+          </div>
+        </div>
+      </section>
+
+      <!-- Enrollment -->
+      <section class="section" id="enroll-section">
+        <div class="section-title">Program Enrollment</div>
+        <hr/>
+
+        <div class="enroll-choice" role="radiogroup" aria-label="Enrollment choice">
+          <label class="radio">
+            <input type="radio" name="enrollChoice" value="later" checked/>
+            <span>Register &amp; enroll later</span>
+          </label>
+          <label class="radio">
+            <input type="radio" name="enrollChoice" value="now"/>
+            <span>Register &amp; enroll now</span>
+          </label>
+        </div>
+
+        <div id="programsWrap" style="display:none; margin-top:16px;">
+          <p class="help" style="margin:0 0 8px;">Select one or more programs. For each selected program, fill the details below.</p>
+
+          <div class="programs-grid" id="programsGrid">
+            <!-- Program cards (checkboxes) -->
+            <label class="program-card">
+              <input type="checkbox" class="prog-check" value="CB-QAP" data-key="CBQAP">
+              <div class="meta">
+                <img src="../assets/img/cbqap.png" alt="CBQAP">
+                <div>
+                  <h4>CB-QAP</h4>
+                  <div class="help">Clinical Biochemistry Quality Assurance Program</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="program-card">
+              <input type="checkbox" class="prog-check" value="MP-QAP" data-key="MPQAP">
+              <div class="meta">
+                <img src="../assets/img/mpqap.png" alt="MPQAP">
+                <div>
+                  <h4>MP-QAP</h4>
+                  <div class="help">Molecular Pathology Quality Assurance Program</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="program-card">
+              <input type="checkbox" class="prog-check" value="NCG-EQAS" data-key="NCGEQAS">
+              <div class="meta">
+                <img src="../assets/img/eqas.png" alt="NCG-EQAS">
+                <div>
+                  <h4>NCG-EQAS</h4>
+                  <div class="help">National Cancer Grid – External Quality Assurance Program</div>
+                </div>
+              </div>
+            </label>
+
+            <label class="program-card">
+              <input type="checkbox" class="prog-check" value="CYTO-QAP" data-key="CYTOQAP">
+              <div class="meta">
+                <img src="../assets/img/cyto-sample.png" alt="CYTO-QAP">
+                <div>
+                  <h4>CYTO-QAP</h4>
+                  <div class="help">Cytopathology Quality Assurance Program</div>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Per-program details will appear here -->
+          <div id="programDetailsContainer" style="margin-top:14px;"></div>
+        </div>
+      </section>
+
+      <button id="submitCta" type="submit" class="btn btn-primary">Submit Registration</button>
+    </form>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 NCG-EQAS</p>
+      <p>Contact: info@eqaspro.com</p>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    const form = document.getElementById('eqas-register');
+    const btnAutofill = document.getElementById('autofillDemo');
+
+    // Enrollment toggling
+    const enrollRadios = Array.from(document.querySelectorAll('input[name="enrollChoice"]'));
+    const programsWrap = document.getElementById('programsWrap');
+    const programsGrid = document.getElementById('programsGrid');
+    const programChecks = () => Array.from(document.querySelectorAll('.prog-check'));
+    const detailsContainer = document.getElementById('programDetailsContainer');
+    
+
+    // Mounted program registry: key -> {collect, destroy}
+    const mounted = new Map();
+
+    function togglePrograms() {
+        const choice = enrollRadios.find(r => r.checked)?.value;
+        const show = choice === 'now';
+        programsWrap.style.display = show ? 'block' : 'none';
+        if (!show) {
+        // Clear selections & unmount all
+        programChecks().forEach(ch => ch.checked = false);
+        mounted.forEach(h => h?.destroy?.());
+        mounted.clear();
+        detailsContainer.innerHTML = '';
+        }
+    }
+
+    // Creates the titled wrapper for a program and returns its inner "program-body" element
+    function ensureProgramBlock(key, label) {
+        let block = detailsContainer.querySelector(`[data-program="${key}"]`);
+        if (!block) {
+        block = document.createElement('div');
+        block.className = 'program-details';
+        block.dataset.program = key;
+        block.innerHTML = `
+            <div class="program-title">${label} — Enrolment</div>
+            <div class="program-body"></div>
+        `;
+        detailsContainer.appendChild(block);
+        } else {
+        // Update title if it exists
+        const title = block.querySelector('.program-title');
+        if (title) title.textContent = `${label} — Enrolment`;
+        }
+        return block.querySelector('.program-body');
+    }
+
+    function mountProgram(key, label) {
+        if (mounted.has(key)) return;
+
+        const mod = window.EnrollModules?.[key];  // e.g., CBQAP, MPQAP, NCGEQAS, CYTOQAP
+        if (!mod || typeof mod.mount !== 'function') return; // no generic fallback
+
+        const body = ensureProgramBlock(key, label);
+        const handle = mod.mount(body) || {};
+        mounted.set(key, handle);
+    }
+
+    function unmountProgram(key) {
+        const handle = mounted.get(key);
+        handle?.destroy?.();
+        mounted.delete(key);
+        const block = detailsContainer.querySelector(`[data-program="${key}"]`);
+        if (block) block.remove();
+    }
+
+    // Program checkbox changes → mount/unmount with title
+    programsGrid.addEventListener('change', (e) => {
+        const cb = e.target.closest('.prog-check');
+        if (!cb) return;
+        const key = cb.dataset.key;
+        const label = cb.value;
+        if (cb.checked) mountProgram(key, label);
+        else unmountProgram(key);
+    });
+
+    // Autofill demo (unchanged except it triggers mount)
+    function setVal(id, val) { const el = document.getElementById(id); if (el) el.value = val; }
+    btnAutofill.addEventListener('click', () => {
+        setVal('ncgMember', 'Yes');
+        updateCta(); 
+        setVal('centerName', 'Tata Memorial Hospital');
+        setVal('addrBuilding', 'Homi Bhabha Block');
+        setVal('addrStreet', 'Dr. E Moses Rd, Parel');
+        setVal('addrCity', 'Mumbai');
+        setVal('addrState', 'Maharashtra');
+        setVal('addrPin', '400012');
+        setVal('contactName', 'Dr. A. Sharma');
+        setVal('contactEmail', 'a.sharma@example.org');
+        setVal('landline', '022-24177000');
+        setVal('mobile', '9876543210');
+        
+
+        const now = enrollRadios.find(r => r.value === 'now');
+        if (now) now.checked = true;
+        togglePrograms();
+
+        const cbqap = programChecks().find(ch => ch.dataset.key === 'CBQAP');
+        if (cbqap) {
+        cbqap.checked = true;
+        cbqap.dispatchEvent(new Event('change', { bubbles: true })); // mounts with title
+        }
+
+        btnAutofill.textContent = 'Filled ✔';
+        setTimeout(() => (btnAutofill.textContent = 'Autofill demo data'), 1200);
+    });
+
+    function formToJSON(frm) {
+        const data = new FormData(frm);
+        return Object.fromEntries(data.entries());
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+        }
+
+        const enrollingNow = enrollRadios.find(r => r.checked)?.value === 'now';
+        const enrollment = { enrollNow: enrollingNow, programs: [] };
+
+        if (enrollingNow) {
+        const selected = programChecks().filter(ch => ch.checked);
+        if (!selected.length) { alert('Please select at least one program to enroll.'); return; }
+
+        selected.forEach(ch => {
+            const key = ch.dataset.key;
+            const label = ch.value;
+            const handle = mounted.get(key);
+            const data = handle?.collect ? handle.collect() : null;
+            enrollment.programs.push({ programKey: key, programLabel: label, data });
+        });
+        }
+
+        if (!confirm('Are you sure you want to submit registration?')) return;
+
+        const basePayload = formToJSON(form);
+        const payload = { ...basePayload, enrollment };
+
+        const isMember = document.getElementById('ncgMember').value === 'Yes';
+        if (!isMember) {
+        try { sessionStorage.setItem('eqas.registration', JSON.stringify(payload)); } catch (_) {}
+        window.location.href = 'payment2.html';
+        return; // stop normal submit flow
+        }
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const oldText = submitBtn.textContent;
+        submitBtn.disabled = true; submitBtn.textContent = 'Submitting…';
+
+        try {
+        // Optional backend try
+        const res = await fetch('/api/register', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('No backend or failed request');
+        alert('Thank you for your registration. Details will be shared with you shortly.');
+        form.reset(); togglePrograms();
+        } catch {
+        // Static fallback: download JSON
+        console.log('Mock submission payload:', payload);
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
+        a.download = 'registration-enrollment.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        alert('No backend detected — downloaded JSON locally.');
+        form.reset(); togglePrograms(); updateCta();
+        } finally {
+        submitBtn.disabled = false; submitBtn.textContent = oldText;
+        }
+        
+    });
+
+    const ncgMemberSel = document.getElementById('ncgMember');
+    const submitCta = document.getElementById('submitCta');
+
+    function updateCta() {
+    const isMember = ncgMemberSel.value === 'Yes';
+    submitCta.textContent = isMember ? 'Submit Registration' : 'Proceed to Payment';
+    }
+    ncgMemberSel.addEventListener('change', updateCta);
+    updateCta(); // set initial state
+
+    // init
+    togglePrograms();
+  })();
+  </script>
+
+
+  <script src="../assets/js/modules/cbqap.js"></script>
+  <script src="../assets/js/modules/mpqap.js"></script>
+  <script src="../assets/js/modules/ncg-eqas.js"></script>
+  <script src="../assets/js/modules/cyto-qap.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

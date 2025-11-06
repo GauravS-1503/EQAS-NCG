@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - EQA System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .page-title {
+            text-align: center;
+            margin: 30px 0;
+            color: #2c3e50;
+        }
+
+        .payment-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .hidden { display: none; }
+
+        @media (max-width: 768px) {
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .order-summary, .payment-form {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            color: #2c3e50;
+        }
+
+        .module-list {
+            margin-bottom: 20px;
+        }
+
+        .module-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .module-item:last-child {
+            border-bottom: none;
+        }
+
+        .module-name {
+            font-weight: 500;
+        }
+
+        .module-price {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .total-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .total-row.final {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .card-details {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-option {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option:hover {
+            border-color: #3498db;
+        }
+
+        .payment-option.active {
+            border-color: #3498db;
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .payment-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .pay-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .pay-button:hover {
+            background-color: #27ae60;
+        }
+
+        .secure-payment {
+            text-align: center;
+            margin-top: 15px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .secure-payment i {
+            color: #2ecc71;
+            margin-right: 5px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">NCG QAP-DL</div>
+                <a href="eqas-reg2.html" class="back-link">
+                    <i>←</i> Back to Registration
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">Complete Your Payment</h1>
+
+        <div class="payment-container">
+            <div class="order-summary">
+                <h2 class="section-title">Order Summary</h2>
+                
+                <div class="module-list" id="orderItems"></div>
+
+                <div class="total-section">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">₹0</span>
+                    </div>
+                    <div class="total-row">
+                        <span>GST (18%):</span>
+                        <span id="tax">₹0</span>
+                    </div>
+                    <div class="total-row final">
+                        <span>Total:</span>
+                        <span id="grandTotal">₹0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-form">
+                <h2 class="section-title">Payment Details</h2>
+
+                <div class="payment-options">
+                <div class="payment-option active" data-mode="card">
+                    <div class="payment-icon">💳</div>
+                    <div>Credit Card</div>
+                </div>
+                <div class="payment-option" data-mode="bank">
+                    <div class="payment-icon">🏦</div>
+                    <div>Bank Transfer</div>
+                </div>
+                </div>
+
+                <form id="payment-form">
+                <!-- ===== Card fields ===== -->
+                <div id="card-fields">
+                    <div class="form-group">
+                    <label for="cardholder">Cardholder Name</label>
+                    <input type="text" id="cardholder" placeholder="John Doe">
+                    </div>
+
+                    <div class="form-group">
+                    <label for="cardnumber">Card Number</label>
+                    <input type="text" id="cardnumber" placeholder="1234 5678 9012 3456">
+                    </div>
+
+                    <div class="card-details">
+                    <div class="form-group">
+                        <label for="expiry">Expiry Date</label>
+                        <input type="text" id="expiry" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123">
+                    </div>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country">
+                        <option value="">Select Country</option>
+                        <option value="us">United States</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="ca">Canada</option>
+                        <option value="au">Australia</option>
+                    </select>
+                    </div>
+                </div>
+
+                <!-- ===== Bank fields ===== -->
+                <div id="bank-fields" class="hidden">
+                    <!-- Static Bank Info -->
+                    <div class="order-summary" style="margin-bottom:16px;">
+                    <h3 class="section-title" style="margin-top:-4px;">Bank Details</h3>
+                    <p class="fw-bold fs-5">1. Mode of payment: NEFT or Demand Draft</p>
+                    <p class="fw-bold fs-5">2. Bank Name: Central Bank of India</p>
+                    <p class="fw-bold fs-5">3. Bank Account No: 1002449683</p>
+                    <p class="fw-bold fs-5">4. Branch: Tata Memorial Hospital</p>
+                    <p class="fw-bold fs-5">5. Bank Address: Parel, Mumbai 400012</p>
+                    <p class="fw-bold fs-5">6. City: Mumbai</p>
+                    <p class="fw-bold fs-5">7. Telephone No: 022-24177000, Ext. 4578</p>
+                    <p class="fw-bold fs-5">8. IFSC: CBIN0284241</p>
+                    <p class="fw-bold fs-5">9. A/c type: Current</p>
+                    <p class="fw-bold fs-5">10. A/c Name: TATA MEMORIAL HOSPITAL NCGEQAS A/C 3332</p>
+                    <p class="fw-bold fs-5">11. GST No: 27AAATT3620R1Z1</p>
+                    <p class="fw-bold fs-5">12. PAN: AAATT3620R</p>
+                    </div>
+
+                    <!-- Transaction Details -->
+                    <div class="form-group">
+                    <label for="transactionId">1. UTR / Reference No. / DD No. *</label>
+                    <input type="text" id="transactionId" placeholder="Enter value" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="orgname">2. Name of the organization *</label>
+                    <input type="text" id="orgname" placeholder="Enter name" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="accholder">3. Name of the account holder *</label>
+                    <input type="text" id="accholder" placeholder="Enter name" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="panno">4. PAN of the organization *</label>
+                    <input type="text" id="panno" placeholder="ABCDE1234F" maxlength="10" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="bank">5. Name of the bank and branch *</label>
+                    <input type="text" id="bank" placeholder="Enter bank & branch" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="date">6. Date of payment *</label>
+                    <input type="date" id="date" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label class="form-label">7. Do you have a GST number? *</label>
+                    <div style="display:flex; gap:16px; align-items:center;">
+                        <label><input type="radio" name="gstOption" value="yes"> Yes</label>
+                        <label><input type="radio" name="gstOption" value="no"> No</label>
+                    </div>
+                    </div>
+
+                    <div class="form-group hidden" id="gstInput">
+                    <label for="gstNumber">Enter GST Number</label>
+                    <input type="text" id="gstNumber" placeholder="22AAAAA0000A1Z5">
+                    </div>
+
+                    <div class="form-group hidden" id="certificateUpload">
+                    <label for="certificateFile">Upload GST Exemption Certificate</label>
+                    <input type="file" id="certificateFile" accept=".pdf,.jpg,.jpeg,.png">
+                    </div>
+
+                    <div class="form-group">
+                    <div style="display:flex; gap:12px; align-items:center; justify-content:flex-start;">
+                        <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('attachmentInput').click()"
+                                style="padding:10px 14px; border:1px solid #3498db; background:#fff; color:#3498db; border-radius:6px; cursor:pointer;">
+                        Add Transaction Proof (PDF/Image)
+                        </button>
+                        <span id="fileName" class="text-muted" style="font-size:14px;"></span>
+                    </div>
+                    <input type="file" id="attachmentInput" class="d-none" onchange="showFileName()" accept=".pdf,.jpg,.jpeg,.png" style="display:none;">
+                    </div>
+                </div>
+
+                <button id="submitBtn" type="submit" class="pay-button">Pay $770.00</button>
+
+                <div class="secure-payment">
+                    <i>🔒</i> Your payment is secure and encrypted
+                </div>
+            </form>
+
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>EQA System &copy; 2023. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ---------- Read payload from registration ----------
+        const payloadRaw = sessionStorage.getItem('eqas.registration');
+        let reg = null;
+        try { reg = JSON.parse(payloadRaw); } catch {}
+        const selections = reg?.enrollment?.programs || []; // [{ programKey, programLabel, data }, ...]
+
+        // ---------- Pricing (INR) ----------
+        const PRICE = {
+            base: { CBQAP: 12000, MPQAP: 18000, NCGEQAS: 15000, CYTOQAP: 10000 }, // per program
+            cbqap_tm_set: 2500,            // each Tumor Marker set
+            cbqap_spe_row: 1500,           // each SPE row
+            cbqap_ife_row: 1500            // each IFE row
+        };
+        const fmt = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+
+        // ---------- Build line items ----------
+        const items = [];
+        selections.forEach(p => {
+            const key = p.programKey;
+            const label = p.programLabel;
+            const base = PRICE.base[key] ?? 12000;
+            items.push({ name: `${label} — Programme Fee`, price: base });
+
+            // CBQAP: add module-level extras if available
+            if (key === 'CBQAP' && p.data) {
+            const tmCount  = Array.isArray(p.data.tmSets) ? p.data.tmSets.length : 0;
+            const speCount = p.data?.electrophoresis?.SPE?.rows?.length || 0;
+            const ifeCount = p.data?.electrophoresis?.IFE?.rows?.length || 0;
+
+            if (tmCount)  items.push({ name: `CB-QAP · Tumor Marker set ×${tmCount}`,       price: tmCount  * PRICE.cbqap_tm_set });
+            if (speCount) items.push({ name: `CB-QAP · SPE row ×${speCount}`,               price: speCount * PRICE.cbqap_spe_row });
+            if (ifeCount) items.push({ name: `CB-QAP · IFE row ×${ifeCount}`,               price: ifeCount * PRICE.cbqap_ife_row });
+            }
+        });
+        if (!items.length) items.push({ name: 'Registration Fee', price: 5000 }); // fallback if nothing selected
+
+        // ---------- Render summary & totals ----------
+        const orderBox = document.getElementById('orderItems');
+        const subtotal = items.reduce((s, it) => s + it.price, 0);
+        const tax = Math.round(subtotal * 0.18); // GST 18%
+        const total = subtotal + tax;
+
+        orderBox.innerHTML = items.map(it => `
+            <div class="module-item">
+            <span class="module-name">${it.name}</span>
+            <span class="module-price">${fmt.format(it.price)}</span>
+            </div>
+        `).join('');
+
+        document.getElementById('subtotal').textContent = fmt.format(subtotal);
+        document.getElementById('tax').textContent      = fmt.format(tax);
+        document.getElementById('grandTotal').textContent = fmt.format(total);
+        document.getElementById('submitBtn').textContent  = `Pay ${fmt.format(total)}`;
+
+        // ---------- Branding (single-program) ----------
+        const firstKey = selections.length === 1 ? selections[0].programKey : '';
+        const colors = { MPQAP:"#2563eb", CBQAP:"#0d9488", NCGEQAS:"#ca8a04", CYTOQAP:"#db2777" };
+        const logos  = {
+            MPQAP:"/assets/img/mpqap.png",
+            CBQAP:"/assets/img/cbqap.png",
+            NCGEQAS:"/assets/img/eqas.png",
+            CYTOQAP:"/assets/img/cyto-sample.png"
+        };
+        const header = document.querySelector('header');
+        if (header && firstKey) header.style.backgroundColor = colors[firstKey] || "#2c3e50";
+        const logoContainer = document.querySelector('.logo');
+        if (logoContainer && firstKey && logos[firstKey]) {
+            const label = selections[0].programLabel;
+            logoContainer.innerHTML = `<img src="${logos[firstKey]}" alt="${label} Logo" style="height:40px;vertical-align:middle;margin-right:10px;"> ${label} Payment`;
+        }
+
+        // ---------- Payment mode toggle (existing code) ----------
+        const options = document.querySelectorAll('.payment-option');
+        const cardFields = document.getElementById('card-fields');
+        const bankFields = document.getElementById('bank-fields');
+        const submitBtn  = document.getElementById('submitBtn');
+        let mode = 'card';
+
+        options.forEach(opt => {
+            opt.addEventListener('click', () => {
+            options.forEach(o => o.classList.remove('active'));
+            opt.classList.add('active');
+            mode = opt.dataset.mode;
+            if (mode === 'card') {
+                cardFields.classList.remove('hidden');
+                bankFields.classList.add('hidden');
+                submitBtn.textContent = `Pay ${fmt.format(total)}`;
+            } else {
+                cardFields.classList.add('hidden');
+                bankFields.classList.remove('hidden');
+                submitBtn.textContent = 'Submit Details';
+            }
+            });
+        });
+
+        // --- GST radio show/hide (unchanged) ---
+        const gstRadios = document.getElementsByName('gstOption');
+        const gstInput  = document.getElementById('gstInput');
+        const certificateUpload = document.getElementById('certificateUpload');
+        gstRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+            if (radio.value.toLowerCase() === 'yes') {
+                gstInput.classList.remove('hidden');
+                certificateUpload.classList.add('hidden');
+            } else {
+                gstInput.classList.add('hidden');
+                certificateUpload.classList.remove('hidden');
+            }
+            });
+        });
+
+        // ---------- Submit: mark ALL selected programs as paid ----------
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (mode === 'card') {
+            alert('Payment processing would happen here (gateway).');
+            const payments = JSON.parse(localStorage.getItem('payments') || '{}');
+            selections.forEach(p => {
+                payments[p.programKey] = { status: 'paid', date: new Date().toISOString().slice(0,10) };
+            });
+            localStorage.setItem('payments', JSON.stringify(payments));
+            window.location.href = 'dashboard.html';
+            return;
+            }
+
+            // BANK MODE validation (kept from your page)
+            const data = {
+            transactionId: document.getElementById('transactionId').value.trim(),
+            orgname:       document.getElementById('orgname').value.trim(),
+            accholder:     document.getElementById('accholder').value.trim(),
+            panno:         document.getElementById('panno').value.trim(),
+            bank:          document.getElementById('bank').value.trim(),
+            date:          document.getElementById('date').value,
+            gstOption:     [...document.getElementsByName('gstOption')].find(r => r.checked)?.value || '',
+            gstNumber:     document.getElementById('gstNumber').value.trim(),
+            attachment:    document.getElementById('attachmentInput').files[0]?.name || ''
+            };
+            const required = ['transactionId','orgname','accholder','panno','bank','date'];
+            const missing = required.filter(k => !data[k]);
+            if (missing.length) { alert('Please fill required fields: ' + missing.join(', ')); return; }
+
+            alert('Bank transfer details submitted. Thank you!');
+            const payments = JSON.parse(localStorage.getItem('payments') || '{}');
+            selections.forEach(p => {
+            payments[p.programKey] = { status: 'paid', date: new Date().toISOString().slice(0,10) };
+            });
+            localStorage.setItem('payments', JSON.stringify(payments));
+            window.location.href = 'dashboard.html';
+        });
+
+        // Utility: file name preview (kept)
+        window.showFileName = function() {
+            const input = document.getElementById('attachmentInput');
+            const fileNameDisplay = document.getElementById('fileName');
+            fileNameDisplay.textContent = input.files.length ? input.files[0].name : "";
+        };
+    </script>
+
+
+</body>
+</html>
